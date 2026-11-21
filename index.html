@@ -192,7 +192,10 @@
   .promo-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; }
 
   .features-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 8px;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px;
+  }
+  @media (max-width: 639px) {
+    .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   .feature-card {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
@@ -202,7 +205,7 @@
   .feature-img-wrap { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #16121d; }
   .feature-img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
   .feature-card:hover .feature-img { transform: scale(1.05); }
-  .feature-title { padding: 7px 8px; font-size: 0.76rem; font-weight: 600; color: var(--accent); text-align: center; }
+  .feature-title { padding: 7px 8px; font-size: 0.74rem; font-weight: 600; color: var(--accent); text-align: center; }
 
   main { max-width: 1100px; margin: 14px auto 0; padding: 0 16px; position: relative; z-index: 20; }
   .section-title {
@@ -211,19 +214,19 @@
   }
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 11px;
   }
-  @media (min-width: 700px) {
+  @media (max-width: 639px) {
     .menu-grid {
-      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
-      gap: 13px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
     }
   }
   .card {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
     overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
-    transition: transform 0.2s; position: relative;
+    transition: transform 0.2s; position: relative; min-width: 0;
   }
   .card:hover { transform: translateY(-2px); border-color: rgba(224, 159, 90, 0.4); }
   
@@ -234,23 +237,23 @@
   .card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .card-weight {
     position: absolute; bottom: 6px; right: 6px; background: rgba(13, 11, 16, 0.85); backdrop-filter: blur(4px);
-    color: var(--text-muted); font-size: 0.6rem; padding: 2px 5px; border-radius: 6px;
+    color: var(--text-muted); font-size: 0.58rem; padding: 2px 5px; border-radius: 6px;
   }
-  .card-body { padding: 9px 10px 6px; }
-  .card-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; line-height: 1.25; }
+  .card-body { padding: 8px 9px 5px; }
+  .card-title { font-size: 0.78rem; font-weight: 600; margin-bottom: 2px; line-height: 1.25; }
   .card-desc {
-    font-size: 0.66rem; color: var(--text-muted); line-height: 1.3; margin-bottom: 4px;
+    font-size: 0.63rem; color: var(--text-muted); line-height: 1.3; margin-bottom: 3px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
   
   .card-footer {
-    display: flex; align-items: center; justify-content: space-between; gap: 6px;
-    padding: 0 10px 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 4px; flex-wrap: wrap;
+    padding: 0 9px 9px;
   }
-  .card-price { font-weight: 700; color: var(--accent); font-size: 0.82rem; white-space: nowrap; }
+  .card-price { font-weight: 700; color: var(--accent); font-size: 0.78rem; white-space: nowrap; }
   .btn-add {
-    background: var(--accent); color: #120e0a; border: none; padding: 5px 8px;
-    border-radius: 7px; font-weight: 700; font-family: inherit; font-size: 0.68rem; cursor: pointer;
+    background: var(--accent); color: #120e0a; border: none; padding: 4px 7px;
+    border-radius: 7px; font-weight: 700; font-family: inherit; font-size: 0.65rem; cursor: pointer;
     white-space: nowrap;
   }
 
@@ -575,6 +578,29 @@ const FIREBASE_CONFIG = {
 firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.firestore();
 
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (err) {
+    try {
+      localStorage.removeItem('moka_menu');
+      localStorage.removeItem('moka_promo');
+      localStorage.removeItem('moka_features');
+      localStorage.setItem(key, value);
+    } catch (err2) {
+      console.error(err2);
+    }
+  }
+}
+
+function safeStorageGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (err) {
+    return null;
+  }
+}
+
 function createSnow() {
   const snowflakesCount = 30;
   for (let i = 0; i < snowflakesCount; i++) {
@@ -847,9 +873,9 @@ let DEFAULT_PROMOS = [
   { id: 2, title: "☕️ Счастливые часы кофе", desc: "С 09:00 до 12:00 скидка 20% на все виды капучино и раф.", img: P(302899) }
 ];
 
-let menuData = JSON.parse(localStorage.getItem('moka_menu')) || DEFAULT_MENU;
-let promoData = JSON.parse(localStorage.getItem('moka_promo')) || DEFAULT_PROMOS;
-let featuresData = JSON.parse(localStorage.getItem('moka_features')) || DEFAULT_FEATURES;
+let menuData = JSON.parse(safeStorageGet('moka_menu')) || DEFAULT_MENU;
+let promoData = JSON.parse(safeStorageGet('moka_promo')) || DEFAULT_PROMOS;
+let featuresData = JSON.parse(safeStorageGet('moka_features')) || DEFAULT_FEATURES;
 
 let cart = [];
 let activeCat = 'Все';
@@ -893,26 +919,26 @@ async function syncAllDataFromCloud() {
       menuData = menuItemsSnap.docs
         .map(doc => doc.data())
         .sort((a, b) => (a.orderIndex ?? a.id) - (b.orderIndex ?? b.id));
-      localStorage.setItem('moka_menu', JSON.stringify(menuData));
+      safeStorageSet('moka_menu', JSON.stringify(menuData));
     } else {
       const sourceItems = (legacyMenuDoc.exists && Array.isArray(legacyMenuDoc.data().items))
         ? legacyMenuDoc.data().items
         : DEFAULT_MENU;
       menuData = sourceItems.map((item, idx) => ({ ...item, orderIndex: idx }));
-      localStorage.setItem('moka_menu', JSON.stringify(menuData));
+      safeStorageSet('moka_menu', JSON.stringify(menuData));
       await seedMenuItemsIndividually(menuData);
     }
 
     if (promoDoc.exists && Array.isArray(promoDoc.data().items)) {
       promoData = promoDoc.data().items;
-      localStorage.setItem('moka_promo', JSON.stringify(promoData));
+      safeStorageSet('moka_promo', JSON.stringify(promoData));
     } else {
       await storeRef.doc('promo').set({ items: DEFAULT_PROMOS });
     }
 
     if (featuresDoc.exists && Array.isArray(featuresDoc.data().items)) {
       featuresData = featuresDoc.data().items;
-      localStorage.setItem('moka_features', JSON.stringify(featuresData));
+      safeStorageSet('moka_features', JSON.stringify(featuresData));
     } else {
       await storeRef.doc('features').set({ items: DEFAULT_FEATURES });
     }
@@ -931,7 +957,7 @@ async function syncAllDataFromCloud() {
 }
 
 async function persistCollection(docId, keyName, items) {
-  localStorage.setItem(keyName, JSON.stringify(items));
+  safeStorageSet(keyName, JSON.stringify(items));
   await db.collection('moka_store').doc(docId).set({ items });
 }
 
@@ -976,14 +1002,14 @@ function checkWorkStatus() {
 }
 
 function loadSavedClientData() {
-  const saved = localStorage.getItem('moka_client_info');
+  const saved = safeStorageGet('moka_client_info');
   if (saved) {
     const input = document.getElementById('clientPhoneName');
     if (input) input.value = saved;
   }
 }
 
-function saveClientData(val) { localStorage.setItem('moka_client_info', val); }
+function saveClientData(val) { safeStorageSet('moka_client_info', val); }
 
 function initLanguageDropdown() {
   const select = document.getElementById('nativeLangSelect');
@@ -1340,7 +1366,7 @@ window.saveMenuItem = async function() {
   try {
     await getMenuItemsCollection().doc(String(targetItem.id)).set(targetItem);
     menuData = nextMenu;
-    localStorage.setItem('moka_menu', JSON.stringify(menuData));
+    safeStorageSet('moka_menu', JSON.stringify(menuData));
     resetMenuForm();
     renderCategories();
     renderMenu();
@@ -1357,7 +1383,7 @@ window.deleteMenuItem = async function(id) {
     try {
       await getMenuItemsCollection().doc(String(id)).delete();
       menuData = nextMenu;
-      localStorage.setItem('moka_menu', JSON.stringify(menuData));
+      safeStorageSet('moka_menu', JSON.stringify(menuData));
       renderCategories();
       renderMenu();
       renderAdminLists();
