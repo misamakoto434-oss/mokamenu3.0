@@ -23,7 +23,7 @@
     --radius: 14px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  
+
   body {
     background-color: var(--bg);
     color: var(--text);
@@ -108,7 +108,7 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   .brand-sub { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
-  
+
   .work-status-badge {
     font-size: 0.7rem; padding: 3px 9px; border-radius: 999px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;
     border: 1px solid var(--border); background: rgba(255,255,255,0.04);
@@ -145,7 +145,7 @@
   }
   .lang-box:hover { border-color: var(--accent); }
   .lang-icon { font-size: 0.9rem; }
-  
+
   .native-lang-select {
     background: transparent; color: var(--text); border: none; outline: none;
     font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; max-width: 165px;
@@ -160,7 +160,7 @@
   }
   .search-box input:focus { border-color: var(--accent); }
   .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.78rem; }
-  
+
   .nav-panel {
     max-width: 1100px; margin: 10px auto 0; padding: 0 4px; display: flex; flex-direction: column; gap: 8px;
   }
@@ -174,7 +174,7 @@
   .cat-pill.active { background: var(--accent); color: #120e0a; font-weight: 600; border-color: var(--accent); }
 
   .promo-banner-container {
-    max-width: 1100px; margin: 16px auto 0; padding: 0 16px;
+    max-width: 1100px; margin: 16px auto 0; padding: 0 16px; position: relative; z-index: 20;
   }
   .promo-slider {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;
@@ -191,21 +191,74 @@
   .promo-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--accent); margin-bottom: 3px; font-weight: 700; }
   .promo-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; }
 
-  .features-grid {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px;
+  .features-header-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 4px 0 4px;
   }
-  @media (max-width: 639px) {
-    .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .features-header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent);
   }
-  .feature-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-    overflow: hidden; display: flex; flex-direction: column; transition: 0.2s;
+  .features-header-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
   }
-  .feature-card:hover { border-color: rgba(224, 159, 90, 0.4); transform: translateY(-2px); }
-  .feature-img-wrap { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #16121d; }
-  .feature-img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
-  .feature-card:hover .feature-img { transform: scale(1.05); }
-  .feature-title { padding: 7px 8px; font-size: 0.74rem; font-weight: 600; color: var(--accent); text-align: center; }
+
+  .features-circles-strip {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 2px 10px;
+    scrollbar-width: none;
+  }
+  .features-circles-strip::-webkit-scrollbar {
+    display: none;
+  }
+  .feature-circle-item {
+    flex: 0 0 78px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    cursor: default;
+    transition: transform 0.2s ease;
+  }
+  .feature-circle-item:hover {
+    transform: translateY(-3px);
+  }
+  .feature-circle-ring {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    padding: 2.5px;
+    background: linear-gradient(135deg, #f3c183, #c47a35);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .feature-circle-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--bg);
+    display: block;
+  }
+  .feature-circle-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    max-width: 78px;
+    word-break: break-word;
+  }
 
   main { max-width: 1100px; margin: 14px auto 0; padding: 0 16px; position: relative; z-index: 20; }
   .section-title {
@@ -229,7 +282,7 @@
     transition: transform 0.2s; position: relative; min-width: 0;
   }
   .card:hover { transform: translateY(-2px); border-color: rgba(224, 159, 90, 0.4); }
-  
+
   .card-img-wrap {
     width: 100%; aspect-ratio: 1 / 1; background: linear-gradient(135deg, #231c2e, #16131c);
     position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
@@ -245,7 +298,7 @@
     font-size: 0.63rem; color: var(--text-muted); line-height: 1.3; margin-bottom: 3px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  
+
   .card-footer {
     display: flex; align-items: center; justify-content: space-between; gap: 4px; flex-wrap: wrap;
     padding: 0 9px 9px;
@@ -281,7 +334,7 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; gap: 8px; align-items: center;
   }
   .cart-badge { background: #120e0a; color: var(--accent); padding: 2px 6px; border-radius: 999px; font-size: 0.72rem; }
-  
+
   .overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
     z-index: 60; display: none; align-items: center; justify-content: center; padding: 16px;
@@ -296,7 +349,7 @@
   .cart-item { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; }
   .cart-item-header { display: flex; justify-content: space-between; align-items: center; }
   .cart-item-note { font-size: 0.72rem; color: var(--accent); font-style: italic; }
-  
+
   .form-field { margin-bottom: 10px; }
   .form-field label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 3px; }
   .form-field input, .form-field select, .form-field textarea {
@@ -309,6 +362,19 @@
     display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 0.78rem; color: var(--text-muted); cursor: pointer;
   }
   .form-field.checkbox-row input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+
+  #interactiveMap { height: 180px; border-radius: 10px; margin-top: 6px; z-index: 1; }
+  .btn-gps {
+    background: rgba(224, 159, 90, 0.15); border: 1px solid var(--accent); color: var(--accent);
+    padding: 6px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; width: 100%;
+  }
+  .map-tip { font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; }
+
+  .quick-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    background: rgba(224, 159, 90, 0.15); border: 1px solid rgba(224, 159, 90, 0.4);
+    color: var(--accent); padding: 4px 9px; border-radius: 999px; font-size: 0.74rem; cursor: pointer;
+  }
 
   .admin-table-item {
     display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03);
@@ -351,7 +417,7 @@
       <button class="admin-btn notranslate" onclick="openAdminLogin()" title="Панель администратора">⚙️ Админ</button>
     </div>
     <div class="phones-bar notranslate">
-      📞 <a href="tel:+996880880216">+996 880 880 216</a> | 
+      📞 <a href="tel:+996508880216">+996 508 880 216</a> |
       <a href="tel:+996555071497">+996 555 071 497</a>
     </div>
     <div class="header-controls">
@@ -400,7 +466,7 @@
   <div class="modal" style="max-width: 600px;">
     <button class="close-btn notranslate" onclick="closeAdminPanel()">✕</button>
     <h2 class="modal-title">Панель управления</h2>
-    
+
     <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
       <button class="btn-primary" style="margin-top:0; flex:1;" onclick="switchAdminTab('menu')">🍽 Меню</button>
       <button class="btn-primary" style="margin-top:0; flex:1; background: rgba(224,159,90,0.2);" onclick="switchAdminTab('promo')">🎁 Акции</button>
@@ -419,7 +485,7 @@
         <label>Загрузить картинку (JPG/PNG с компьютера)</label>
         <input type="file" id="newImageFile" accept="image/*">
       </div>
-      
+
       <button class="btn-primary" id="saveMenuBtn" onclick="saveMenuItem()">Добавить в меню</button>
       <button id="cancelEditBtn" class="btn-danger" style="display:none; width:100%; margin-top:8px; padding:8px;" onclick="resetMenuForm()">Отменить редактирование</button>
 
@@ -510,7 +576,10 @@
   <div class="modal">
     <button class="close-btn notranslate" onclick="closeWaiterModal()">✕</button>
     <h2 class="modal-title">Вызов официанта</h2>
-    <div class="form-field"><label>Номер вашего столика</label><input type="text" id="waiterTableNum" placeholder="Например: Столик №6"></div>
+    <div class="form-field">
+      <label>Номер вашего столика</label>
+      <input type="text" id="waiterTableNum" placeholder="Например: Столик №6">
+    </div>
     <div class="form-field">
       <label>Что вам требуется?</label>
       <select id="waiterReason">
@@ -572,6 +641,7 @@
 
 <script>
 const ADMIN_PASS = "061208";
+const WA_PHONE = "996508880216";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAUgzOPH4PSDxMMZLS42QR7l_3BoohPuPk",
@@ -689,7 +759,7 @@ function bustImageCache(imgSrc, versionTag) {
 }
 
 const DEFAULT_FEATURES = [
-  { id: 1, title: "лаунж-зона", img: P(1571458) },
+  { id: 1, title: "Лаунж-зона", img: P(1571458) },
   { id: 2, title: "Кофейный бар", img: P(302899) },
   { id: 3, title: "Алко-бар", img: P(4342445) },
   { id: 4, title: "Юрта", img: P(769289) },
@@ -699,7 +769,7 @@ const DEFAULT_FEATURES = [
   { id: 8, title: "Мероприятия", img: P(2774556) },
   { id: 9, title: "Фото зона", img: P(1002638) },
   { id: 10, title: "Романтический ужин", img: P(941861) },
-  { id: 11, title: "Скидки на день рождения", img: P(3171837) },
+  { id: 11, title: "День рождения", img: P(3171837) },
   { id: 12, title: "Вечер с костром", img: P(1473335) },
   { id: 13, title: "Игровые акции", img: P(1111585) }
 ];
@@ -1092,14 +1162,18 @@ function renderPromos() {
       `).join('')}
     </div>
 
-    <h2 class="section-title">✨ Атмосфера & Услуги MOKA</h2>
-    <div class="features-grid">
+    <div class="features-header-line">
+      <div class="features-header-title">✨ Атмосфера & Услуги MOKA</div>
+      <div class="features-header-sub">Ждём в гости • 🤍</div>
+    </div>
+
+    <div class="features-circles-strip">
       ${featuresData.map(f => `
-        <div class="feature-card">
-          <div class="feature-img-wrap">
-            <img class="feature-img" src="${f.img || ''}" alt="${f.title}" loading="lazy" onerror="this.src='${makeFallbackSvg(f.title)}';">
+        <div class="feature-circle-item" title="${f.title}">
+          <div class="feature-circle-ring">
+            <img class="feature-circle-img" src="${f.img || ''}" alt="${f.title}" loading="lazy" onerror="this.src='${makeFallbackSvg(f.title)}';">
           </div>
-          <div class="feature-title">${f.title}</div>
+          <div class="feature-circle-label">${f.title}</div>
         </div>
       `).join('')}
     </div>
@@ -1517,7 +1591,7 @@ window.sendWaiterCall = function() {
   const table = document.getElementById('waiterTableNum').value.trim();
   const reason = document.getElementById('waiterReason').value;
   if (!table) { alert('Укажите номер столика!'); return; }
-  window.open(`https://wa.me/996880880216?text=${encodeURIComponent(`🛎 ВЫЗОВ ОФИЦИАНТА В MOKA!\n▪️ Столик: ${table}\n▪️ Запрос: ${reason}`)}`, '_blank');
+  window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(`🛎 ВЫЗОВ ОФИЦИАНТА В MOKA!\n▪️ Столик: ${table}\n▪️ Запрос: ${reason}`)}`, '_blank');
   closeWaiterModal();
 };
 
@@ -1538,7 +1612,7 @@ window.sendBookingRequest = function() {
   let text = `📅 БРОНЬ СТОЛИКА В MOKA!\n▪️ Гость: ${namePhone}\n▪️ Когда: ${dateTime}\n▪️ Гостей: ${persons}\n▪️ Атмосфера: ${musicVibe}\n▪️ Зона: ${zoneType}\n`;
   if (note) text += `▪️ Пожелания: ${note}\n`;
 
-  window.open(`https://wa.me/996880880216?text=${encodeURIComponent(text)}`, '_blank');
+  window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(text)}`, '_blank');
   closeBookingModal();
 };
 
@@ -1555,13 +1629,13 @@ document.getElementById('submitOrderBtn').onclick = () => {
   const orderType = document.getElementById('orderType').value;
   const deliveryTime = document.getElementById('deliveryTimeOpt').value;
   let locationInfo = orderType === 'qr' ? `☕️ Столик: ${document.getElementById('tableNumber').value.trim()}` : `🚗 Доставка: ${document.getElementById('deliveryAddress').value.trim()}`;
-  
+
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   let text = `🎄 ЗАКАЗ В MOKA!\n👤 Клиент: ${clientInfo}\n${locationInfo}\n🕒 Время: ${deliveryTime}\n\n`;
   cart.forEach(i => { text += `▪️ ${i.name} x${i.qty} — ${i.price * i.qty} сом\n`; if (i.note) text += `   └ Пожелание: ${i.note}\n`; });
   text += `\n💰 ИТОГО: ${total} сом`;
 
-  window.open(`https://wa.me/996880880216?text=${encodeURIComponent(text)}`, '_blank');
+  window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(text)}`, '_blank');
   cart = []; updateCart(); cartModal.classList.remove('open');
 };
 
